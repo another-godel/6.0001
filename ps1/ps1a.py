@@ -1,11 +1,8 @@
-print("enter the cost of your dream house: ")
-total_cost = float(input())
+total_cost = float(input("enter the cost of your dream house: "))
 
-print("enter your annual salary: ")
-annual_salary = float(input())
+annual_salary = float(input("enter your annual salary: "))
 
-print("enter the portion of salary to be saved, as decimal: ")
-portion_saved = float(input())
+portion_saved = float(input("enter the portion of salary to be saved, as a decimal: "))
 
 portion_down_payment = 0.25
 current_savings = 0
