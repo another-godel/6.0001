@@ -1,0 +1,5 @@
+print("enter number x")
+x = int(input())
+print("enter number y")
+y = int(input())
+print("x**y = " + str(x**y))
