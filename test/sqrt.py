@@ -5,12 +5,12 @@ def sqrt(n,epsilon):
     approx = (low + high)/2
     times = 0
     while(abs(approx**2 - n) >= epsilon):
-        times += 1
         print("low =", low, "high =", high, "approximate =", approx, "times:", times)
-        if(approx**2 > n):
-            high = approx
-        else:
+        times += 1
+        if(approx**2 < n):
             low = approx
+        else:
+            high = approx
         approx = (low + high)/2
     return approx
 
