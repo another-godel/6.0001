@@ -10,6 +10,7 @@
 import math
 import random
 import string
+import os
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
@@ -23,8 +24,8 @@ SCRABBLE_LETTER_VALUES = {
 # Helper code
 # (you don't need to understand this helper code)
 
-WORDLIST_FILENAME = "words.txt"
-
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+WORDLIST_FILENAME = os.path.join(THIS_FOLDER, 'words.txt')
 def load_words():
     """
     Returns a list of valid words. Words are strings of lowercase letters.
