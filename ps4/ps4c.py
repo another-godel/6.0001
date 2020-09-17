@@ -3,6 +3,7 @@
 # Collaborators:
 # Time Spent: x:xx
 
+import os
 import string
 from ps4a import get_permutations
 
@@ -23,7 +24,7 @@ def load_words(file_name):
     inFile = open(file_name, 'r')
     # wordlist: list of strings
     wordlist = []
-    for line in inFile:
+    for line in inFile: 
         wordlist.extend([word.lower() for word in line.split(' ')])
     print("  ", len(wordlist), "words loaded.")
     return wordlist
@@ -51,7 +52,8 @@ def is_word(word_list, word):
 
 ### END HELPER CODE ###
 
-WORDLIST_FILENAME = 'words.txt'
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+WORDLIST_FILENAME = os.path.join(THIS_FOLDER, 'words.txt')
 
 # you may find these constants helpful
 VOWELS_LOWER = 'aeiou'
@@ -70,7 +72,8 @@ class SubMessage(object):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        self.message_text = text
+        self.valid_words = load_words(WORDLIST_FILENAME)
     
     def get_message_text(self):
         '''
@@ -78,6 +81,7 @@ class SubMessage(object):
         
         Returns: self.message_text
         '''
+        return self.message_text
         pass #delete this line and replace with your code here
 
     def get_valid_words(self):
@@ -87,8 +91,8 @@ class SubMessage(object):
         
         Returns: a COPY of self.valid_words
         '''
-        pass #delete this line and replace with your code here
-                
+        return self.valid_words[:]
+
     def build_transpose_dict(self, vowels_permutation):
         '''
         vowels_permutation (string): a string containing a permutation of vowels (a, e, i, o, u)
@@ -108,8 +112,14 @@ class SubMessage(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        
-        pass #delete this line and replace with your code here
+        transpose_dict = {}
+        for char in VOWELS_LOWER:
+            transpose_dict[char] = vowels_permutation[VOWELS_LOWER.index(char)]
+            transpose_dict[char.upper()] = transpose_dict[char].upper()
+        for char in CONSONANTS_LOWER:
+            transpose_dict[char] = char
+            transpose_dict[char.upper()] = char.upper()
+        return transpose_dict
     
     def apply_transpose(self, transpose_dict):
         '''
@@ -118,8 +128,15 @@ class SubMessage(object):
         Returns: an encrypted version of the message text, based 
         on the dictionary
         '''
-        
-        pass #delete this line and replace with your code here
+        transposed = ''
+        for char in self.message_text:
+            if char in ' .,!':
+                transposed += char
+            elif (char in string.ascii_lowercase) or (char in string.ascii_uppercase):
+                transposed += transpose_dict[char] 
+            else: 
+                raise ValueError('Not a valid string')
+        return transposed
         
 class EncryptedSubMessage(SubMessage):
     def __init__(self, text):
@@ -132,7 +149,7 @@ class EncryptedSubMessage(SubMessage):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words)
         '''
-        pass #delete this line and replace with your code here
+        SubMessage.__init__(self, text)
 
     def decrypt_message(self):
         '''
@@ -152,7 +169,20 @@ class EncryptedSubMessage(SubMessage):
         
         Hint: use your function from Part 4A
         '''
-        pass #delete this line and replace with your code here
+        goat = 0
+        key = None
+        message_text_decrypted = None
+        for permutation in get_permutations(VOWELS_LOWER):
+            decrypted = self.apply_transpose(self.build_transpose_dict(permutation)).split()
+            count = 0
+            for word in decrypted:
+                if is_word(self.valid_words, word):
+                    count += 1
+            if count > goat:
+                goat = count
+                key = permutation
+                message_text_decrypted = self.apply_transpose(self.build_transpose_dict(permutation))
+        return (key, message_text_decrypted)
     
 
 if __name__ == '__main__':
