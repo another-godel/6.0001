@@ -21,3 +21,8 @@ test = infoHiding()
 test.printInvisible()
 test.__printInvisible__()
 #test.__printInvisible()
+
+class subClass(infoHiding):
+    def __init__(self):
+        print('from subclass', self.__invisible)
+        testSub = subClass()

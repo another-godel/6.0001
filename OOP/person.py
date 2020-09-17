@@ -124,7 +124,9 @@ class Grades(object):
         #return self.students[:] #return copy of list of students
         #efficient way
         for s in self.students:
-            yield s
+            yield s 
+        #defStudents() return values instead of a list
+
 def gradeReport(course):
     """Assumes course is of type Grades"""
     report = ''
